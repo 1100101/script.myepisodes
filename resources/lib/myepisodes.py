@@ -79,6 +79,7 @@ class MyEpisodes(object):
     def add_show_to_list(self, showname, showid):
         sanitized_key = sanitize(showname, ' ')
         sanitized_key = sanitize_ex(sanitized_key, "\'", '')
+        sanitized_key = sanitize_ex(sanitized_key, "&", 'and')
         if sanitized_key != showname:
           showname = ";".join([showname, sanitized_key])
         self.shows[showname.lower()] = int(showid)
@@ -208,6 +209,8 @@ class MyEpisodes(object):
                 continue
             title = re.split(regex, file_name)[0]
             title = sanitize(title, ' ')
+            title = sanitize_ex(title, "\'", '')
+            title = sanitize_ex(title, "&", 'and')
             title = title.strip()
             # print "T: %s S: %s E: %s" % (title, season, episode)
             return title.title(), season, episode            
