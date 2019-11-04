@@ -22,7 +22,7 @@ if title is None or season is None or episode is None:
   print "Unable to parse file name '%s'. Not a TV show?" % sys.argv[1]
   exit(1)
 
-#print "Parse result: %s (S: %s E: %s)" % (title, season, episode)
+print "Parse result: %s (S: %s E: %s)" % (title, season, episode)
 
 mye = MyEpisodes(username, password)
 if not mye.is_logged:

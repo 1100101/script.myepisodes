@@ -8,8 +8,9 @@ import urllib, urllib2, urlparse
 
 # This is totally stolen from script.xbmc.subtitles plugin !
 REGEX_EXPRESSIONS = [
-    '[._ -](?:(?:(?:20|19)\d{2})[._ -])?S?(\d{1,2})(?:E|x)?(\d{2})[^\\\/]*',
-    '[Ss]([0-9]+)[][._-]*[Ee]([0-9]+)([^\\\/]*)$',
+    #'[._ -](?:(?:(?:20|19)\d{2})[._ -])?S?(\d{1,2})(?:E|x)?(\d{2})[^\\\/]*',
+   r'[Ss]([0-9]+)[][._-]*[Ee]([0-9]+)([^\\\\/]*)$',
+   #'[Ss]([0-9]+)[][._-]*[Ee]([0-9]+)([^\\\/]*)$',
     '[._ -]([0-9]+)x([0-9]+)([^\\/]*)',                     # foo.1x09
     '[._ -]([0-9]+)([0-9][0-9])([._ -][^\\/]*)',          # foo.109
     '([0-9]+)([0-9][0-9])([._ -][^\\/]*)',
@@ -42,8 +43,8 @@ class MyEpisodes(object):
         self.userid = userid.encode('utf-8', 'replace')
         self.password = password
         self.shows = {}
-        #self.add_show_to_list('Marvels Agents Of S H I E L D', '11339')
-        #self.add_show_to_list('Brooklyn Nine Nine', '12718')
+        self.add_show_to_list('Charmed  2018', '22045')
+        self.add_show_to_list('A Discovery of Witches', '21530')
 
         self.cj = cookielib.CookieJar()
         self.opener = urllib2.build_opener(
@@ -95,6 +96,7 @@ class MyEpisodes(object):
         mylist = soup.find("table", {"class": "mylist"})
         mylist_tr = mylist.findAll("tr")[1:-1]
         for row in mylist_tr:
+        
             link = row.find('a', {'href': True})
             link_url = link.get('href')
             showid = link_url.split('/')[2]
@@ -107,6 +109,7 @@ class MyEpisodes(object):
         data = self.send_req(shows_url)
         if data is None:
             return False
+            
         soup = BeautifulSoup(data)
         # active shows
         mylist = soup.find("select", {"id": "shows"})
@@ -217,7 +220,7 @@ class MyEpisodes(object):
             title = sanitize_ex(title, "&", 'and')
             title = title.strip()
             # print "T: %s S: %s E: %s" % (title, season, episode)
-            self.title_is_filename = True
+            # self.title_is_filename = True
             return title.title(), season, episode
         return None, None, None
 
